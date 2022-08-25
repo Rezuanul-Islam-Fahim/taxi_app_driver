@@ -27,7 +27,10 @@ class LoginSignupScreen extends StatelessWidget {
                   color: Theme.of(context).primaryColor,
                 ),
                 const SizedBox(height: 10),
-                Text('Taxi App', style: Theme.of(context).textTheme.headline1),
+                Text(
+                  'Taxi App Driver',
+                  style: Theme.of(context).textTheme.headline1,
+                ),
                 const SizedBox(height: 20),
                 const LoginForm(),
               ],
