@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -11,6 +12,8 @@ class MapProvider with ChangeNotifier {
   late GoogleMapController? _controller;
   late Position? _deviceLocation;
   late String? _deviceAddress;
+  late BitmapDescriptor? _selectionPin;
+  late BitmapDescriptor? _personPin;
 
   CameraPosition? get cameraPos => _cameraPos;
   GoogleMapController? get controller => _controller;
@@ -21,12 +24,24 @@ class MapProvider with ChangeNotifier {
     _cameraPos = null;
     _deviceLocation = null;
     _deviceAddress = null;
+    setCustomPin();
 
     if (kDebugMode) {
       print('=====///=============///=====');
       print('Map provider loaded');
       print('///==========///==========///');
     }
+  }
+
+  Future<void> setCustomPin() async {
+    _selectionPin = await BitmapDescriptor.fromAssetImage(
+      const ImageConfiguration(devicePixelRatio: 2.5),
+      'images/pin.png',
+    );
+    _personPin = await BitmapDescriptor.fromAssetImage(
+      const ImageConfiguration(devicePixelRatio: 2.5),
+      'images/map-person.png',
+    );
   }
 
   Future<void> initializeMap() async {
