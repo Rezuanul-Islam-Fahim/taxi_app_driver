@@ -29,12 +29,13 @@ class MapScreen extends StatelessWidget {
                         initialCameraPosition: mapProvider.cameraPos!,
                         compassEnabled: true,
                         onCameraMove: mapProvider.onCameraMove,
+                        markers: mapProvider.markers!,
                         padding: const EdgeInsets.only(bottom: 90),
                       )
                     : const Center(
                         child: CircularProgressIndicator(),
                       ),
-                BottomDraggableSheet(),
+                const BottomDraggableSheet(),
               ],
             ),
           );

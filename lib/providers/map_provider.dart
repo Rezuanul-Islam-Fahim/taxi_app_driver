@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:uuid/uuid.dart';
 
 import '../services/location_service.dart';
 
@@ -14,16 +15,19 @@ class MapProvider with ChangeNotifier {
   late String? _deviceAddress;
   late BitmapDescriptor? _selectionPin;
   late BitmapDescriptor? _personPin;
+  late Set<Marker>? _markers;
 
   CameraPosition? get cameraPos => _cameraPos;
   GoogleMapController? get controller => _controller;
   Position? get deviceLocation => _deviceLocation;
   String? get deviceAddress => _deviceAddress;
+  Set<Marker>? get markers => _markers;
 
   MapProvider() {
     _cameraPos = null;
     _deviceLocation = null;
     _deviceAddress = null;
+    _markers = {};
     setCustomPin();
 
     if (kDebugMode) {
@@ -35,11 +39,11 @@ class MapProvider with ChangeNotifier {
 
   Future<void> setCustomPin() async {
     _selectionPin = await BitmapDescriptor.fromAssetImage(
-      const ImageConfiguration(devicePixelRatio: 2.5),
+      const ImageConfiguration(devicePixelRatio: 0.5, size: Size(10, 10)),
       'images/pin.png',
     );
     _personPin = await BitmapDescriptor.fromAssetImage(
-      const ImageConfiguration(devicePixelRatio: 2.5),
+      const ImageConfiguration(devicePixelRatio: 0.5, size: Size(10, 10)),
       'images/map-person.png',
     );
   }
@@ -110,5 +114,22 @@ class MapProvider with ChangeNotifier {
         print(places[2].toString());
       }
     });
+  }
+
+  void addMarker(LatLng pos, BitmapDescriptor pin) {
+    _markers!.add(
+      Marker(
+        markerId: MarkerId(const Uuid().v4()),
+        icon: pin,
+        position: pos,
+      ),
+    );
+  }
+
+  Future<void> showTrip(LatLng pickup, LatLng destination) async {
+    addMarker(pickup, _personPin!);
+    addMarker(destination, _selectionPin!);
+
+    notifyListeners();
   }
 }

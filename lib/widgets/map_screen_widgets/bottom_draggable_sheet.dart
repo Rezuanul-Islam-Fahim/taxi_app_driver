@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/trip_model.dart';
+import '../../providers/map_provider.dart';
 import '../../services/database_service.dart';
 
 class BottomDraggableSheet extends StatefulWidget {
@@ -30,6 +33,11 @@ class _BottomDraggableSheetState extends State<BottomDraggableSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final MapProvider mapProvider = Provider.of<MapProvider>(
+      context,
+      listen: false,
+    );
+
     return DraggableScrollableSheet(
       initialChildSize: 0.15,
       minChildSize: 0.1,
@@ -71,7 +79,7 @@ class _BottomDraggableSheetState extends State<BottomDraggableSheet> {
               }
 
               Trip trip = _trips[index - 1];
-              return _buildTripPanel(trip);
+              return _buildTripPanel(trip, mapProvider);
             },
           ),
         );
@@ -79,7 +87,7 @@ class _BottomDraggableSheetState extends State<BottomDraggableSheet> {
     );
   }
 
-  Widget _buildTripPanel(Trip trip) {
+  Widget _buildTripPanel(Trip trip, MapProvider mapProvider) {
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
@@ -124,7 +132,10 @@ class _BottomDraggableSheetState extends State<BottomDraggableSheet> {
                 child: const Text('Start Trip'),
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () => mapProvider.showTrip(
+                  LatLng(trip.pickupLatitude!, trip.pickupLongitude!),
+                  LatLng(trip.destinationLatitude!, trip.destinationLongitude!),
+                ),
                 child: const Text('Show on Map'),
               ),
             ],
