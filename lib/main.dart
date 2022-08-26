@@ -1,7 +1,10 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 
+import 'providers/map_provider.dart';
 import 'screens/login_signup_screen.dart';
+import 'screens/map_screen.dart';
 import 'screens/onboarding_screen.dart';
 import 'theme.dart';
 
@@ -16,15 +19,19 @@ class TaxiAppDriver extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Taxi App Driver',
-      initialRoute: OnboardingScreen.route,
-      theme: theme,
-      routes: {
-        OnboardingScreen.route: (_) => const OnboardingScreen(),
-        LoginSignupScreen.route: (_) => const LoginSignupScreen(),
-      },
+    return ChangeNotifierProvider.value(
+      value: MapProvider(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Taxi App Driver',
+        initialRoute: OnboardingScreen.route,
+        theme: theme,
+        routes: {
+          OnboardingScreen.route: (_) => const OnboardingScreen(),
+          LoginSignupScreen.route: (_) => const LoginSignupScreen(),
+          MapScreen.route: (_) => const MapScreen(),
+        },
+      ),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../screens/map_screen.dart';
 import '../../services/auth_services.dart';
 import 'text_field.dart';
 import 'form_button.dart';
@@ -54,7 +55,7 @@ class _LoginFormState extends State<LoginForm>
     if (!mounted) return;
     if (isAuthenticated) {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (BuildContext context) => const Scaffold(),
+        builder: (BuildContext context) => const MapScreen(),
       ));
     }
   }
