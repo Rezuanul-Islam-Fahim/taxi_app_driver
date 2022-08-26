@@ -170,5 +170,10 @@ class MapProvider with ChangeNotifier {
     await setPolyline(pickupPoint: pickup, destinationPoint: destination);
 
     notifyListeners();
+    _controller!.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(target: pickup, zoom: 14),
+      ),
+    );
   }
 }
