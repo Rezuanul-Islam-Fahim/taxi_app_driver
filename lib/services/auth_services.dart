@@ -16,10 +16,18 @@ class AuthServices {
     }
 
     try {
-      await _auth.signInWithEmailAndPassword(
-        email: email!,
-        password: password!,
-      );
+      if (await _db.checkUser(email!)) {
+        await _auth.signInWithEmailAndPassword(
+          email: email,
+          password: password!,
+        );
+      } else {
+        if (kDebugMode) {
+          print('User not found');
+
+          return false;
+        }
+      }
 
       return true;
     } catch (e) {
@@ -50,7 +58,7 @@ class AuthServices {
       await _db.storeUser(
         user.User(
           id: userData.user!.uid,
-          userName: userName,
+          username: userName,
           email: email,
         ),
       );

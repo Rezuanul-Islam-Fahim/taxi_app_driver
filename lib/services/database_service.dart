@@ -8,4 +8,13 @@ class DatabaseService {
   Future<void> storeUser(user.User user) async {
     await _firestore.collection('drivers').doc(user.id).set(user.toMap());
   }
+
+  Future<bool> checkUser(String email) async {
+    QuerySnapshot querySnapshot = await _firestore
+        .collection('drivers')
+        .where('email', isEqualTo: email)
+        .get();
+
+    return querySnapshot.size == 1 ? true : false;
+  }
 }
