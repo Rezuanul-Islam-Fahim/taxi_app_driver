@@ -1,10 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:uuid/uuid.dart';
 
+import '../constant.dart';
 import '../services/location_service.dart';
 
 class MapProvider with ChangeNotifier {
@@ -16,18 +18,21 @@ class MapProvider with ChangeNotifier {
   late BitmapDescriptor? _selectionPin;
   late BitmapDescriptor? _personPin;
   late Set<Marker>? _markers;
+  late Set<Polyline>? _polylines;
 
   CameraPosition? get cameraPos => _cameraPos;
   GoogleMapController? get controller => _controller;
   Position? get deviceLocation => _deviceLocation;
   String? get deviceAddress => _deviceAddress;
   Set<Marker>? get markers => _markers;
+  Set<Polyline>? get polylines => _polylines;
 
   MapProvider() {
     _cameraPos = null;
     _deviceLocation = null;
     _deviceAddress = null;
     _markers = {};
+    _polylines = {};
     setCustomPin();
 
     if (kDebugMode) {
@@ -126,9 +131,43 @@ class MapProvider with ChangeNotifier {
     );
   }
 
+  Future<void> setPolyline({
+    LatLng? pickupPoint,
+    LatLng? destinationPoint,
+  }) async {
+    _polylines!.clear();
+
+    PolylineResult result = await PolylinePoints().getRouteBetweenCoordinates(
+      googleMapApi,
+      PointLatLng(pickupPoint!.latitude, pickupPoint.longitude),
+      PointLatLng(destinationPoint!.latitude, destinationPoint.longitude),
+    );
+
+    if (kDebugMode) {
+      print(result.points);
+    }
+
+    if (result.points.isNotEmpty) {
+      final String polylineId = const Uuid().v4();
+
+      _polylines!.add(
+        Polyline(
+          polylineId: PolylineId(polylineId),
+          color: Colors.black87,
+          points: result.points
+              .map((PointLatLng point) =>
+                  LatLng(point.latitude, point.longitude))
+              .toList(),
+          width: 4,
+        ),
+      );
+    }
+  }
+
   Future<void> showTrip(LatLng pickup, LatLng destination) async {
     addMarker(pickup, _personPin!);
     addMarker(destination, _selectionPin!);
+    await setPolyline(pickupPoint: pickup, destinationPoint: destination);
 
     notifyListeners();
   }

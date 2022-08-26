@@ -30,6 +30,7 @@ class MapScreen extends StatelessWidget {
                         compassEnabled: true,
                         onCameraMove: mapProvider.onCameraMove,
                         markers: mapProvider.markers!,
+                        polylines: mapProvider.polylines!,
                         padding: const EdgeInsets.only(bottom: 90),
                       )
                     : const Center(
