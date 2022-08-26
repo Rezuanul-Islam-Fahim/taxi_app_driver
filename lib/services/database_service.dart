@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../models/trip_model.dart';
 import '../models/user_model.dart' as user;
 
 class DatabaseService {
@@ -16,5 +17,21 @@ class DatabaseService {
         .get();
 
     return querySnapshot.size == 1 ? true : false;
+  }
+
+  Stream<List<Trip>> getTrips() {
+    return _firestore
+        .collection('trips')
+        .where('canceled', isEqualTo: false)
+        .where('accepted', isEqualTo: false)
+        .snapshots()
+        .map(
+          (QuerySnapshot snapshot) => snapshot.docs
+              .map(
+                (QueryDocumentSnapshot doc) =>
+                    Trip.fromJson(doc.data() as Map<String, dynamic>),
+              )
+              .toList(),
+        );
   }
 }

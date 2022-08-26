@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/map_provider.dart';
+import '../widgets/map_screen_widgets/bottom_draggable_sheet.dart';
 
 class MapScreen extends StatelessWidget {
   const MapScreen({Key? key}) : super(key: key);
@@ -33,6 +34,7 @@ class MapScreen extends StatelessWidget {
                     : const Center(
                         child: CircularProgressIndicator(),
                       ),
+                BottomDraggableSheet(),
               ],
             ),
           );
