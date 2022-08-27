@@ -4,9 +4,16 @@ import 'package:provider/provider.dart';
 import '../../models/map_action.dart';
 import '../../models/trip_model.dart';
 import '../../providers/map_provider.dart';
+import '../../services/database_service.dart';
 
 class HeadingToPassenger extends StatelessWidget {
   const HeadingToPassenger({Key? key}) : super(key: key);
+
+  void _arrivedToPassenger(Trip onGoingTrip, MapProvider mapProvider) {
+    final DatabaseService dbService = DatabaseService();
+    onGoingTrip.arrived = true;
+    dbService.updateTrip(onGoingTrip);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +76,10 @@ class HeadingToPassenger extends StatelessWidget {
                 ],
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () => _arrivedToPassenger(
+                  ongoingTrip,
+                  mapProvider,
+                ),
                 child: const Text('ARRIVED'),
               ),
             ],

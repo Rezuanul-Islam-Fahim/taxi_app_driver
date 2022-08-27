@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/map_action.dart';
 import '../../models/trip_model.dart';
 import '../../providers/map_provider.dart';
 import '../../services/database_service.dart';

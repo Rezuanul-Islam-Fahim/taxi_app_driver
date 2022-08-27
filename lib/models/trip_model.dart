@@ -11,6 +11,7 @@ class Trip {
   bool? accepted;
   bool? started;
   bool? canceled;
+  bool? arrived;
 
   Trip({
     this.id,
@@ -22,9 +23,10 @@ class Trip {
     this.destinationLongitude,
     this.distance,
     this.cost,
-    this.accepted = false,
-    this.started = false,
-    this.canceled = false,
+    this.accepted,
+    this.started,
+    this.canceled,
+    this.arrived,
   });
 
   factory Trip.fromJson(Map<String, dynamic> data) => Trip(
@@ -40,22 +42,32 @@ class Trip {
         accepted: data['accepted'],
         started: data['started'],
         canceled: data['canceled'],
+        arrived: data['arrived'],
       );
 
   Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'pickupAddress': pickupAddress,
-      'destinationAddress': destinationAddress,
-      'pickupLatitude': pickupLatitude,
-      'pickupLongitude': pickupLongitude,
-      'destinationLatitude': destinationLatitude,
-      'destinationLongitude': destinationLongitude,
-      'distance': distance,
-      'cost': cost,
-      'accepted': accepted,
-      'started': started,
-      'canceled': canceled,
-    };
+    Map<String, dynamic> data = {};
+
+    void addNonNull(String key, dynamic value) {
+      if (value != null) {
+        data[key] = value;
+      }
+    }
+
+    addNonNull('id', id);
+    addNonNull('pickupAddress', pickupAddress);
+    addNonNull('destinationAddress', destinationAddress);
+    addNonNull('pickupLatitude', pickupLatitude);
+    addNonNull('pickupLongitude', pickupLongitude);
+    addNonNull('destinationLatitude', destinationLatitude);
+    addNonNull('destinationLongitude', destinationLongitude);
+    addNonNull('distance', distance);
+    addNonNull('cost', cost);
+    addNonNull('accepted', accepted);
+    addNonNull('started', started);
+    addNonNull('canceled', canceled);
+    addNonNull('arrived', arrived);
+
+    return data;
   }
 }
