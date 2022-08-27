@@ -177,6 +177,8 @@ class MapProvider with ChangeNotifier {
   }
 
   Future<void> showTrip(LatLng pickup, LatLng destination) async {
+    _markers!.clear();
+
     addMarker(pickup, _personPin!);
     addMarker(destination, _selectionPin!);
     await setPolyline(pickupPoint: pickup, destinationPoint: destination);
