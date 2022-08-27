@@ -241,4 +241,22 @@ class MapProvider with ChangeNotifier {
 
     notifyListeners();
   }
+
+  Future<void> startTrip(Trip trip) async {
+    updateOngoingTrip(trip);
+    changeMapAction(MapAction.tripStarted);
+    _controller!.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: LatLng(
+            _deviceLocation!.latitude,
+            _deviceLocation!.longitude,
+          ),
+          zoom: 16,
+        ),
+      ),
+    );
+
+    notifyListeners();
+  }
 }
