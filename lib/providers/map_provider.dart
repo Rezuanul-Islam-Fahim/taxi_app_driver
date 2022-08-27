@@ -22,6 +22,7 @@ class MapProvider with ChangeNotifier {
   late Set<Marker>? _markers;
   late Set<Polyline>? _polylines;
   late MapAction? _mapAction;
+  late Trip? _ongoingTrip;
 
   CameraPosition? get cameraPos => _cameraPos;
   GoogleMapController? get controller => _controller;
@@ -30,6 +31,7 @@ class MapProvider with ChangeNotifier {
   Set<Marker>? get markers => _markers;
   Set<Polyline>? get polylines => _polylines;
   MapAction? get mapAction => _mapAction;
+  Trip? get ongoingTrip => _ongoingTrip;
 
   MapProvider() {
     _mapAction = MapAction.browse;
@@ -38,6 +40,7 @@ class MapProvider with ChangeNotifier {
     _deviceAddress = null;
     _markers = {};
     _polylines = {};
+    _ongoingTrip = null;
     setCustomPin();
 
     if (kDebugMode) {
@@ -208,6 +211,7 @@ class MapProvider with ChangeNotifier {
       firstPoint: LatLng(trip.pickupLatitude!, trip.pickupLongitude!),
       lastPoint: LatLng(_deviceLocation!.latitude, _deviceLocation!.longitude),
     );
+    _ongoingTrip = trip;
 
     notifyListeners();
   }
