@@ -21,9 +21,11 @@ class _BottomDraggableSheetState extends State<BottomDraggableSheet> {
 
   void getAllTrips() {
     _dbService.getTrips().listen((List<Trip> trips) {
-      setState(() {
-        _trips = trips;
-      });
+      if (mounted) {
+        setState(() {
+          _trips = trips;
+        });
+      }
     });
   }
 
