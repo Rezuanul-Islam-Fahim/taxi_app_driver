@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/map_action.dart';
 import '../../models/trip_model.dart';
 import '../../providers/map_provider.dart';
 import '../../services/database_service.dart';
@@ -15,6 +16,7 @@ class BottomDraggableSheet extends StatefulWidget {
 
 class _BottomDraggableSheetState extends State<BottomDraggableSheet> {
   final DatabaseService _dbService = DatabaseService();
+  late MapProvider _mapProvider;
   List<Trip> _trips = [];
 
   void getAllTrips() {
@@ -25,19 +27,24 @@ class _BottomDraggableSheetState extends State<BottomDraggableSheet> {
     });
   }
 
+  void _acceptTrip(Trip trip) async {
+    trip.accepted = true;
+    await _dbService.updateTrip(trip);
+    _mapProvider.acceptTrip();
+  }
+
   @override
   void initState() {
+    _mapProvider = Provider.of<MapProvider>(
+      context,
+      listen: false,
+    );
     getAllTrips();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final MapProvider mapProvider = Provider.of<MapProvider>(
-      context,
-      listen: false,
-    );
-
     return DraggableScrollableSheet(
       initialChildSize: 0.15,
       minChildSize: 0.1,
@@ -79,7 +86,7 @@ class _BottomDraggableSheetState extends State<BottomDraggableSheet> {
               }
 
               Trip trip = _trips[index - 1];
-              return _buildTripPanel(trip, mapProvider);
+              return _buildTripPanel(trip);
             },
           ),
         );
@@ -87,7 +94,7 @@ class _BottomDraggableSheetState extends State<BottomDraggableSheet> {
     );
   }
 
-  Widget _buildTripPanel(Trip trip, MapProvider mapProvider) {
+  Widget _buildTripPanel(Trip trip) {
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
@@ -128,11 +135,11 @@ class _BottomDraggableSheetState extends State<BottomDraggableSheet> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () => _acceptTrip(trip),
                 child: const Text('Start Trip'),
               ),
               ElevatedButton(
-                onPressed: () => mapProvider.showTrip(
+                onPressed: () => _mapProvider.showTrip(
                   LatLng(trip.pickupLatitude!, trip.pickupLongitude!),
                   LatLng(trip.destinationLatitude!, trip.destinationLongitude!),
                 ),

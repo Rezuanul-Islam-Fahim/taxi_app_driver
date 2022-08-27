@@ -34,4 +34,8 @@ class DatabaseService {
               .toList(),
         );
   }
+
+  Future<void> updateTrip(Trip trip) async {
+    await _firestore.collection('trips').doc(trip.id).update(trip.toMap());
+  }
 }

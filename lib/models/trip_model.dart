@@ -1,16 +1,16 @@
 class Trip {
   String? id;
-  final String? pickupAddress;
-  final String? destinationAddress;
-  final double? pickupLatitude;
-  final double? pickupLongitude;
-  final double? destinationLatitude;
-  final double? destinationLongitude;
-  final double? distance;
-  final double? cost;
-  final bool? accepted;
-  final bool? started;
-  final bool? canceled;
+  String? pickupAddress;
+  String? destinationAddress;
+  double? pickupLatitude;
+  double? pickupLongitude;
+  double? destinationLatitude;
+  double? destinationLongitude;
+  double? distance;
+  double? cost;
+  bool? accepted;
+  bool? started;
+  bool? canceled;
 
   Trip({
     this.id,

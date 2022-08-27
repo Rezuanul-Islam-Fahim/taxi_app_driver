@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:uuid/uuid.dart';
 
 import '../constant.dart';
+import '../models/map_action.dart';
 import '../services/location_service.dart';
 
 class MapProvider with ChangeNotifier {
@@ -19,6 +20,7 @@ class MapProvider with ChangeNotifier {
   late BitmapDescriptor? _personPin;
   late Set<Marker>? _markers;
   late Set<Polyline>? _polylines;
+  late MapAction? _mapAction;
 
   CameraPosition? get cameraPos => _cameraPos;
   GoogleMapController? get controller => _controller;
@@ -26,8 +28,10 @@ class MapProvider with ChangeNotifier {
   String? get deviceAddress => _deviceAddress;
   Set<Marker>? get markers => _markers;
   Set<Polyline>? get polylines => _polylines;
+  MapAction? get mapAction => _mapAction;
 
   MapProvider() {
+    _mapAction = MapAction.browse;
     _cameraPos = null;
     _deviceLocation = null;
     _deviceAddress = null;
@@ -164,6 +168,14 @@ class MapProvider with ChangeNotifier {
     }
   }
 
+  void changeMapAction(MapAction mapAction) {
+    _mapAction = mapAction;
+  }
+
+  void resetMapAction() {
+    _mapAction = MapAction.browse;
+  }
+
   Future<void> showTrip(LatLng pickup, LatLng destination) async {
     addMarker(pickup, _personPin!);
     addMarker(destination, _selectionPin!);
@@ -175,5 +187,11 @@ class MapProvider with ChangeNotifier {
         CameraPosition(target: pickup, zoom: 14),
       ),
     );
+  }
+
+  void acceptTrip() {
+    changeMapAction(MapAction.tripAccepted);
+
+    notifyListeners();
   }
 }

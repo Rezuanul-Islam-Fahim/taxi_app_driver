@@ -1,0 +1,4 @@
+enum MapAction {
+  browse,
+  tripAccepted,
+}
