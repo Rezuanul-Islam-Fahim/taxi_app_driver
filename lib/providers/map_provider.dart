@@ -172,10 +172,13 @@ class MapProvider with ChangeNotifier {
     }
   }
 
-  void changeMapAction(MapAction mapAction, {bool shouldUpdate = false}) {
-    _mapAction = mapAction;
+  void clearPaths() {
+    _markers!.clear();
+    _polylines!.clear();
+  }
 
-    if (shouldUpdate) notifyListeners();
+  void changeMapAction(MapAction mapAction) {
+    _mapAction = mapAction;
   }
 
   void resetMapAction() {
@@ -197,14 +200,14 @@ class MapProvider with ChangeNotifier {
     );
   }
 
-  void clearPaths() {
-    _markers!.clear();
-    _polylines!.clear();
+  void updateOngoingTrip(Trip trip) {
+    _ongoingTrip = trip;
   }
 
   Future<void> acceptTrip(Trip trip) async {
     changeMapAction(MapAction.tripAccepted);
     clearPaths();
+    updateOngoingTrip(trip);
     addMarker(
       LatLng(trip.pickupLatitude!, trip.pickupLongitude!),
       _personPin!,
@@ -213,12 +216,29 @@ class MapProvider with ChangeNotifier {
       firstPoint: LatLng(trip.pickupLatitude!, trip.pickupLongitude!),
       lastPoint: LatLng(_deviceLocation!.latitude, _deviceLocation!.longitude),
     );
-    _ongoingTrip = trip;
 
     notifyListeners();
   }
 
-  void updateOngoingTrip(Trip trip) {
-    _ongoingTrip = trip;
+  Future<void> arrivedToPassenger(Trip trip) async {
+    changeMapAction(MapAction.arrived);
+    updateOngoingTrip(trip);
+    clearPaths();
+    addMarker(
+      LatLng(trip.destinationLatitude!, trip.destinationLongitude!),
+      _selectionPin!,
+    );
+    await setPolyline(
+      firstPoint: LatLng(
+        trip.destinationLatitude!,
+        trip.destinationLongitude!,
+      ),
+      lastPoint: LatLng(
+        _deviceLocation!.latitude,
+        _deviceLocation!.longitude,
+      ),
+    );
+
+    notifyListeners();
   }
 }

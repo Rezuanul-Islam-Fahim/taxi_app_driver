@@ -13,8 +13,8 @@ class StartTrip extends StatelessWidget {
     final DatabaseService dbService = DatabaseService();
     ongoingTrip.started = true;
     mapProvider.updateOngoingTrip(ongoingTrip);
-    dbService.updateTrip(ongoingTrip);
-    mapProvider.changeMapAction(MapAction.tripStarted, shouldUpdate: true);
+    mapProvider.changeMapAction(MapAction.tripStarted);
+    mapProvider.arrivedToPassenger(ongoingTrip);
   }
 
   @override

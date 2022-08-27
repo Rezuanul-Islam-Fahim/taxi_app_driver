@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/map_action.dart';
@@ -14,9 +13,8 @@ class HeadingToPassenger extends StatelessWidget {
   void _arrivedToPassenger(Trip ongoingTrip, MapProvider mapProvider) {
     final DatabaseService dbService = DatabaseService();
     ongoingTrip.arrived = true;
-    mapProvider.updateOngoingTrip(ongoingTrip);
     dbService.updateTrip(ongoingTrip);
-    mapProvider.changeMapAction(MapAction.arrived, shouldUpdate: true);
+    mapProvider.arrivedToPassenger(ongoingTrip);
   }
 
   double _calculateDistance(Trip trip, Position deviceLocation) {
