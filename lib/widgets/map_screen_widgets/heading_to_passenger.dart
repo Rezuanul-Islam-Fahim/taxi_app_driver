@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/map_action.dart';
@@ -15,6 +17,16 @@ class HeadingToPassenger extends StatelessWidget {
     mapProvider.updateOngoingTrip(ongoingTrip);
     dbService.updateTrip(ongoingTrip);
     mapProvider.changeMapAction(MapAction.arrived, shouldUpdate: true);
+  }
+
+  double _calculateDistance(Trip trip, Position deviceLocation) {
+    return Geolocator.distanceBetween(
+          trip.pickupLatitude!,
+          trip.pickupLongitude!,
+          deviceLocation.latitude,
+          deviceLocation.longitude,
+        ) /
+        1000;
   }
 
   @override
@@ -65,7 +77,7 @@ class HeadingToPassenger extends StatelessWidget {
                         ),
                       if (ongoingTrip.distance != null)
                         Text(
-                          'Distance: ${ongoingTrip.distance!.toStringAsFixed(2)} Km',
+                          'Distance: ${_calculateDistance(ongoingTrip, mapProvider.deviceLocation!).toStringAsFixed(2)} Km',
                         ),
                     ],
                   ),

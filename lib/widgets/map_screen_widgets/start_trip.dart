@@ -58,7 +58,10 @@ class StartTrip extends StatelessWidget {
                       if (ongoingTrip.pickupAddress != null)
                         Column(
                           children: [
-                            _buildInfoText('From', ongoingTrip.pickupAddress!),
+                            _buildInfoText(
+                              'From: ',
+                              ongoingTrip.pickupAddress!,
+                            ),
                             const SizedBox(height: 2),
                           ],
                         ),
@@ -66,7 +69,7 @@ class StartTrip extends StatelessWidget {
                         Column(
                           children: [
                             _buildInfoText(
-                              'To',
+                              'To: ',
                               ongoingTrip.destinationAddress!,
                             ),
                             const SizedBox(height: 2),
@@ -74,7 +77,7 @@ class StartTrip extends StatelessWidget {
                         ),
                       if (ongoingTrip.distance != null)
                         _buildInfoText(
-                          'Distance',
+                          'Distance: ',
                           '${ongoingTrip.distance!.toStringAsFixed(2)} Km',
                         ),
                     ],
