@@ -8,6 +8,7 @@ import 'package:uuid/uuid.dart';
 
 import '../constant.dart';
 import '../models/map_action.dart';
+import '../models/trip_model.dart';
 import '../services/location_service.dart';
 
 class MapProvider with ChangeNotifier {
@@ -136,15 +137,15 @@ class MapProvider with ChangeNotifier {
   }
 
   Future<void> setPolyline({
-    LatLng? pickupPoint,
-    LatLng? destinationPoint,
+    LatLng? firstPoint,
+    LatLng? lastPoint,
   }) async {
     _polylines!.clear();
 
     PolylineResult result = await PolylinePoints().getRouteBetweenCoordinates(
       googleMapApi,
-      PointLatLng(pickupPoint!.latitude, pickupPoint.longitude),
-      PointLatLng(destinationPoint!.latitude, destinationPoint.longitude),
+      PointLatLng(firstPoint!.latitude, firstPoint.longitude),
+      PointLatLng(lastPoint!.latitude, lastPoint.longitude),
     );
 
     if (kDebugMode) {
@@ -181,7 +182,7 @@ class MapProvider with ChangeNotifier {
 
     addMarker(pickup, _personPin!);
     addMarker(destination, _selectionPin!);
-    await setPolyline(pickupPoint: pickup, destinationPoint: destination);
+    await setPolyline(firstPoint: pickup, lastPoint: destination);
 
     notifyListeners();
     _controller!.animateCamera(
@@ -191,8 +192,22 @@ class MapProvider with ChangeNotifier {
     );
   }
 
-  void acceptTrip() {
+  void clearPaths() {
+    _markers!.clear();
+    _polylines!.clear();
+  }
+
+  Future<void> acceptTrip(Trip trip) async {
     changeMapAction(MapAction.tripAccepted);
+    clearPaths();
+    addMarker(
+      LatLng(trip.pickupLatitude!, trip.pickupLongitude!),
+      _personPin!,
+    );
+    await setPolyline(
+      firstPoint: LatLng(trip.pickupLatitude!, trip.pickupLongitude!),
+      lastPoint: LatLng(_deviceLocation!.latitude, _deviceLocation!.longitude),
+    );
 
     notifyListeners();
   }

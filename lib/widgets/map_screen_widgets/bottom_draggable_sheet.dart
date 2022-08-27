@@ -30,7 +30,7 @@ class _BottomDraggableSheetState extends State<BottomDraggableSheet> {
   void _acceptTrip(Trip trip) async {
     trip.accepted = true;
     await _dbService.updateTrip(trip);
-    _mapProvider.acceptTrip();
+    _mapProvider.acceptTrip(trip);
   }
 
   @override
