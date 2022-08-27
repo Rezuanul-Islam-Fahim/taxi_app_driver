@@ -6,15 +6,15 @@ import '../../models/trip_model.dart';
 import '../../providers/map_provider.dart';
 import '../../services/database_service.dart';
 
-class HeadingToPassenger extends StatelessWidget {
-  const HeadingToPassenger({Key? key}) : super(key: key);
+class StartTrip extends StatelessWidget {
+  const StartTrip({Key? key}) : super(key: key);
 
-  void _arrivedToPassenger(Trip ongoingTrip, MapProvider mapProvider) {
+  void _startTrip(Trip ongoingTrip, MapProvider mapProvider) {
     final DatabaseService dbService = DatabaseService();
-    ongoingTrip.arrived = true;
+    ongoingTrip.started = true;
     mapProvider.updateOngoingTrip(ongoingTrip);
     dbService.updateTrip(ongoingTrip);
-    mapProvider.changeMapAction(MapAction.arrived, shouldUpdate: true);
+    mapProvider.changeMapAction(MapAction.tripStarted, shouldUpdate: true);
   }
 
   @override
@@ -26,7 +26,7 @@ class HeadingToPassenger extends StatelessWidget {
     Trip? ongoingTrip = mapProvider.ongoingTrip ?? Trip();
 
     return Visibility(
-      visible: mapProvider.mapAction == MapAction.tripAccepted,
+      visible: mapProvider.mapAction == MapAction.arrived,
       child: Positioned(
         bottom: 15,
         left: 15,
@@ -41,7 +41,7 @@ class HeadingToPassenger extends StatelessWidget {
             children: [
               const Center(
                 child: Text(
-                  'Heading To Passenger',
+                  'Picking up Passenger',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -56,16 +56,26 @@ class HeadingToPassenger extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       if (ongoingTrip.pickupAddress != null)
-                        Text(
-                          ongoingTrip.pickupAddress!,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Column(
+                          children: [
+                            _buildInfoText('From', ongoingTrip.pickupAddress!),
+                            const SizedBox(height: 2),
+                          ],
+                        ),
+                      if (ongoingTrip.destinationAddress != null)
+                        Column(
+                          children: [
+                            _buildInfoText(
+                              'To',
+                              ongoingTrip.destinationAddress!,
+                            ),
+                            const SizedBox(height: 2),
+                          ],
                         ),
                       if (ongoingTrip.distance != null)
-                        Text(
-                          'Distance: ${ongoingTrip.distance!.toStringAsFixed(2)} Km',
+                        _buildInfoText(
+                          'Distance',
+                          '${ongoingTrip.distance!.toStringAsFixed(2)} Km',
                         ),
                     ],
                   ),
@@ -77,16 +87,35 @@ class HeadingToPassenger extends StatelessWidget {
                     ),
                 ],
               ),
+              const SizedBox(height: 5),
               ElevatedButton(
-                onPressed: () => _arrivedToPassenger(
-                  ongoingTrip,
-                  mapProvider,
-                ),
-                child: const Text('ARRIVED'),
+                onPressed: () => _startTrip(ongoingTrip, mapProvider),
+                child: const Text('START TRIP'),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildInfoText(String title, String info) {
+    return RichText(
+      text: TextSpan(
+        text: title,
+        style: const TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+        ),
+        children: [
+          TextSpan(
+            text: info,
+            style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+        ],
       ),
     );
   }

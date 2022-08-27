@@ -172,8 +172,10 @@ class MapProvider with ChangeNotifier {
     }
   }
 
-  void changeMapAction(MapAction mapAction) {
+  void changeMapAction(MapAction mapAction, {bool shouldUpdate = false}) {
     _mapAction = mapAction;
+
+    if (shouldUpdate) notifyListeners();
   }
 
   void resetMapAction() {
@@ -214,5 +216,9 @@ class MapProvider with ChangeNotifier {
     _ongoingTrip = trip;
 
     notifyListeners();
+  }
+
+  void updateOngoingTrip(Trip trip) {
+    _ongoingTrip = trip;
   }
 }
