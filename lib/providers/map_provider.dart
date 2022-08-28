@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -24,6 +26,7 @@ class MapProvider with ChangeNotifier {
   late MapAction? _mapAction;
   late Trip? _ongoingTrip;
   late double? _distanceBetweenRoutes;
+  late StreamSubscription<Position>? _positionStream;
 
   CameraPosition? get cameraPos => _cameraPos;
   GoogleMapController? get controller => _controller;
@@ -34,6 +37,7 @@ class MapProvider with ChangeNotifier {
   MapAction? get mapAction => _mapAction;
   Trip? get ongoingTrip => _ongoingTrip;
   double? get distanceBetweenRoutes => _distanceBetweenRoutes;
+  StreamSubscription<Position>? get positionStream => _positionStream;
 
   MapProvider() {
     _mapAction = MapAction.browse;
@@ -44,6 +48,7 @@ class MapProvider with ChangeNotifier {
     _polylines = {};
     _ongoingTrip = null;
     _distanceBetweenRoutes = null;
+    _positionStream = null;
     setCustomPin();
 
     if (kDebugMode) {
@@ -119,6 +124,16 @@ class MapProvider with ChangeNotifier {
 
   void setDeviceLocation(Position location) {
     _deviceLocation = location;
+  }
+
+  void listenToPositionStream() {
+    _positionStream = LocationService().getRealtimeDeviceLocation().listen(
+      (Position pos) {
+        if (kDebugMode) {
+          print(pos.toString());
+        }
+      },
+    );
   }
 
   void setDeviceLocationAddress(double latitude, double longitude) {
@@ -237,6 +252,7 @@ class MapProvider with ChangeNotifier {
       lastPoint: LatLng(_deviceLocation!.latitude, _deviceLocation!.longitude),
     );
     calculateDistanceBetweenRoutes(polylines.points);
+    listenToPositionStream();
 
     notifyListeners();
   }
