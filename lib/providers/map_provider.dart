@@ -141,6 +141,14 @@ class MapProvider with ChangeNotifier {
               ongoingTrip!.pickupLongitude!,
             ),
           );
+        } else if (mapAction == MapAction.tripStarted) {
+          updateRoutes(
+            LatLng(pos.latitude, pos.longitude),
+            LatLng(
+              _ongoingTrip!.destinationLatitude!,
+              ongoingTrip!.destinationLongitude!,
+            ),
+          );
         }
       },
     );
@@ -295,7 +303,7 @@ class MapProvider with ChangeNotifier {
       ),
     );
     calculateDistanceBetweenRoutes(result.points);
-    _positionStream!.cancel();
+    _positionStream!.pause();
 
     notifyListeners();
   }
@@ -314,6 +322,7 @@ class MapProvider with ChangeNotifier {
         ),
       ),
     );
+    _positionStream!.resume();
 
     notifyListeners();
   }
