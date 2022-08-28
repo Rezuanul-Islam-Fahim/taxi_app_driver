@@ -74,11 +74,16 @@ class StartTrip extends StatelessWidget {
                             const SizedBox(height: 2),
                           ],
                         ),
-                      if (ongoingTrip.distance != null)
+                      if (mapProvider.distanceBetweenRoutes != null)
                         _buildInfoText(
                           'Distance: ',
-                          '${ongoingTrip.distance!.toStringAsFixed(2)} Km',
-                        ),
+                          '${mapProvider.distanceBetweenRoutes!.toStringAsFixed(2)} Km',
+                        )
+                      else
+                        _buildInfoText(
+                          'Distance: ',
+                          '--',
+                        )
                     ],
                   ),
                   if (ongoingTrip.cost != null)

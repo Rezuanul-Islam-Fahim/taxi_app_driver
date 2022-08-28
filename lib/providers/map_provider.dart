@@ -249,7 +249,7 @@ class MapProvider with ChangeNotifier {
       LatLng(trip.destinationLatitude!, trip.destinationLongitude!),
       _selectionPin!,
     );
-    await setPolyline(
+    PolylineResult result = await setPolyline(
       firstPoint: LatLng(
         trip.destinationLatitude!,
         trip.destinationLongitude!,
@@ -259,6 +259,7 @@ class MapProvider with ChangeNotifier {
         _deviceLocation!.longitude,
       ),
     );
+    calculateDistanceBetweenRoutes(result.points);
 
     notifyListeners();
   }
