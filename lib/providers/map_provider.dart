@@ -295,6 +295,7 @@ class MapProvider with ChangeNotifier {
       ),
     );
     calculateDistanceBetweenRoutes(result.points);
+    _positionStream!.cancel();
 
     notifyListeners();
   }
