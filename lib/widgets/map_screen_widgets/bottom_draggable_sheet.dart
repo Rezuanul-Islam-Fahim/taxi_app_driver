@@ -70,7 +70,7 @@ class _BottomDraggableSheetState extends State<BottomDraggableSheet> {
           ),
           child: ListView.builder(
             controller: controller,
-            itemCount: _trips.length + 1,
+            itemCount: _trips.isNotEmpty ? _trips.length + 1 : 2,
             itemBuilder: (BuildContext context, int index) {
               if (index == 0) {
                 return Center(
@@ -82,6 +82,19 @@ class _BottomDraggableSheetState extends State<BottomDraggableSheet> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     margin: const EdgeInsets.only(bottom: 10),
+                  ),
+                );
+              } else if (index == 1 && _trips.isEmpty) {
+                return const Padding(
+                  padding: EdgeInsets.only(top: 10),
+                  child: Center(
+                    child: Text(
+                      'No Ongoing Trip Found',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 );
               }
