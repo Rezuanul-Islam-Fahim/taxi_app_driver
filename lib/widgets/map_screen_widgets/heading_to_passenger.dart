@@ -17,16 +17,6 @@ class HeadingToPassenger extends StatelessWidget {
     mapProvider.arrivedToPassenger(ongoingTrip);
   }
 
-  double _calculateDistance(Trip trip, Position deviceLocation) {
-    return Geolocator.distanceBetween(
-          trip.pickupLatitude!,
-          trip.pickupLongitude!,
-          deviceLocation.latitude,
-          deviceLocation.longitude,
-        ) /
-        1000;
-  }
-
   @override
   Widget build(BuildContext context) {
     final MapProvider mapProvider = Provider.of<MapProvider>(
@@ -73,9 +63,11 @@ class HeadingToPassenger extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                      if (ongoingTrip.distance != null)
+                      if (mapProvider.distanceBetweenRoutes == null)
+                        const Text('Distance: --')
+                      else
                         Text(
-                          'Distance: ${_calculateDistance(ongoingTrip, mapProvider.deviceLocation!).toStringAsFixed(2)} Km',
+                          'Distance ${mapProvider.distanceBetweenRoutes!.toStringAsFixed(2)} Km',
                         ),
                     ],
                   ),

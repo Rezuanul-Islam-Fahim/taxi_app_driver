@@ -23,6 +23,7 @@ class MapProvider with ChangeNotifier {
   late Set<Polyline>? _polylines;
   late MapAction? _mapAction;
   late Trip? _ongoingTrip;
+  late double? _distanceBetweenRoutes;
 
   CameraPosition? get cameraPos => _cameraPos;
   GoogleMapController? get controller => _controller;
@@ -32,6 +33,7 @@ class MapProvider with ChangeNotifier {
   Set<Polyline>? get polylines => _polylines;
   MapAction? get mapAction => _mapAction;
   Trip? get ongoingTrip => _ongoingTrip;
+  double? get distanceBetweenRoutes => _distanceBetweenRoutes;
 
   MapProvider() {
     _mapAction = MapAction.browse;
@@ -41,6 +43,7 @@ class MapProvider with ChangeNotifier {
     _markers = {};
     _polylines = {};
     _ongoingTrip = null;
+    _distanceBetweenRoutes = null;
     setCustomPin();
 
     if (kDebugMode) {
@@ -139,7 +142,7 @@ class MapProvider with ChangeNotifier {
     );
   }
 
-  Future<void> setPolyline({
+  Future<PolylineResult> setPolyline({
     LatLng? firstPoint,
     LatLng? lastPoint,
   }) async {
@@ -170,6 +173,8 @@ class MapProvider with ChangeNotifier {
         ),
       );
     }
+
+    return result;
   }
 
   void clearPaths() {
@@ -204,6 +209,21 @@ class MapProvider with ChangeNotifier {
     _ongoingTrip = trip;
   }
 
+  void calculateDistanceBetweenRoutes(List<PointLatLng> points) {
+    double distance = 0;
+
+    for (int i = 0; i < points.length - 1; i++) {
+      distance += Geolocator.distanceBetween(
+        points[i].latitude,
+        points[i].longitude,
+        points[i + 1].latitude,
+        points[i + 1].longitude,
+      );
+    }
+
+    _distanceBetweenRoutes = distance / 1000;
+  }
+
   Future<void> acceptTrip(Trip trip) async {
     changeMapAction(MapAction.tripAccepted);
     clearPaths();
@@ -212,10 +232,11 @@ class MapProvider with ChangeNotifier {
       LatLng(trip.pickupLatitude!, trip.pickupLongitude!),
       _personPin!,
     );
-    await setPolyline(
+    PolylineResult polylines = await setPolyline(
       firstPoint: LatLng(trip.pickupLatitude!, trip.pickupLongitude!),
       lastPoint: LatLng(_deviceLocation!.latitude, _deviceLocation!.longitude),
     );
+    calculateDistanceBetweenRoutes(polylines.points);
 
     notifyListeners();
   }
