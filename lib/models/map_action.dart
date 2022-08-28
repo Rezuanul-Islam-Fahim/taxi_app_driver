@@ -3,4 +3,5 @@ enum MapAction {
   tripAccepted,
   arrived,
   tripStarted,
+  reachedDestination,
 }

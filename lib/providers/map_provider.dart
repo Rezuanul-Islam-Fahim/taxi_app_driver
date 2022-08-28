@@ -133,6 +133,12 @@ class MapProvider with ChangeNotifier {
           print(pos.toString());
         }
 
+        setDeviceLocation(pos);
+        setDeviceLocationAddress(
+          pos.latitude,
+          pos.longitude,
+        );
+
         if (mapAction == MapAction.tripAccepted) {
           updateRoutes(
             LatLng(pos.latitude, pos.longitude),
@@ -323,6 +329,16 @@ class MapProvider with ChangeNotifier {
       ),
     );
     _positionStream!.resume();
+
+    notifyListeners();
+  }
+
+  void reachedDestination(Trip trip) {
+    updateOngoingTrip(trip);
+    changeMapAction(MapAction.reachedDestination);
+    clearPaths();
+    _positionStream!.cancel();
+    _distanceBetweenRoutes = null;
 
     notifyListeners();
   }

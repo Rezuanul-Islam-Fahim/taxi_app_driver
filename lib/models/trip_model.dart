@@ -12,6 +12,7 @@ class Trip {
   bool? started;
   bool? canceled;
   bool? arrived;
+  bool? reachedDestination;
 
   Trip({
     this.id,
@@ -27,6 +28,7 @@ class Trip {
     this.started,
     this.canceled,
     this.arrived,
+    this.reachedDestination,
   });
 
   factory Trip.fromJson(Map<String, dynamic> data) => Trip(
@@ -43,6 +45,7 @@ class Trip {
         started: data['started'],
         canceled: data['canceled'],
         arrived: data['arrived'],
+        reachedDestination: data['reachedDestination'],
       );
 
   Map<String, dynamic> toMap() {
@@ -67,6 +70,7 @@ class Trip {
     addNonNull('started', started);
     addNonNull('canceled', canceled);
     addNonNull('arrived', arrived);
+    addNonNull('reachedDestination', reachedDestination);
 
     return data;
   }

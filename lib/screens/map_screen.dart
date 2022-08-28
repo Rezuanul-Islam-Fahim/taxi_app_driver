@@ -8,6 +8,7 @@ import '../providers/map_provider.dart';
 import '../widgets/map_screen_widgets/bottom_draggable_sheet.dart';
 import '../widgets/map_screen_widgets/heading_to_passenger.dart';
 import '../widgets/map_screen_widgets/start_trip.dart';
+import '../widgets/map_screen_widgets/trip_started.dart';
 
 class MapScreen extends StatelessWidget {
   const MapScreen({Key? key}) : super(key: key);
@@ -44,6 +45,7 @@ class MapScreen extends StatelessWidget {
                     : Container(),
                 HeadingToPassenger(key: key),
                 StartTrip(key: key),
+                TripStarted(key: key),
               ],
             ),
           );
