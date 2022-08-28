@@ -342,4 +342,11 @@ class MapProvider with ChangeNotifier {
 
     notifyListeners();
   }
+
+  void completeTrip() {
+    resetMapAction();
+    _ongoingTrip = null;
+
+    notifyListeners();
+  }
 }

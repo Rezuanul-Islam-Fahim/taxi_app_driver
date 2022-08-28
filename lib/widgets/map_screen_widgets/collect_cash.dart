@@ -13,7 +13,7 @@ class CollectCash extends StatelessWidget {
     final DatabaseService dbService = DatabaseService();
     ongoingTrip.tripCompleted = true;
     dbService.updateTrip(ongoingTrip);
-    // mapProvider.reachedDestination(ongoingTrip);
+    mapProvider.completeTrip();
   }
 
   @override
