@@ -9,11 +9,19 @@ import '../../services/database_service.dart';
 class CollectCash extends StatelessWidget {
   const CollectCash({Key? key}) : super(key: key);
 
-  void _collectCash(Trip ongoingTrip, MapProvider mapProvider) {
+  void _collectCash(
+    BuildContext context,
+    Trip ongoingTrip,
+    MapProvider mapProvider,
+  ) {
     final DatabaseService dbService = DatabaseService();
     ongoingTrip.tripCompleted = true;
     dbService.updateTrip(ongoingTrip);
     mapProvider.completeTrip();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Trip Completed')),
+    );
   }
 
   @override
@@ -67,7 +75,11 @@ class CollectCash extends StatelessWidget {
                     vertical: 10,
                   ),
                 ),
-                onPressed: () => _collectCash(ongoingTrip, mapProvider),
+                onPressed: () => _collectCash(
+                  context,
+                  ongoingTrip,
+                  mapProvider,
+                ),
                 label: const Text('COLLECT CASH'),
                 icon: const Icon(Icons.attach_money_rounded),
               ),
