@@ -132,6 +132,16 @@ class MapProvider with ChangeNotifier {
         if (kDebugMode) {
           print(pos.toString());
         }
+
+        if (mapAction == MapAction.tripAccepted) {
+          updateRoutes(
+            LatLng(pos.latitude, pos.longitude),
+            LatLng(
+              _ongoingTrip!.pickupLatitude!,
+              ongoingTrip!.pickupLongitude!,
+            ),
+          );
+        }
       },
     );
   }
@@ -145,6 +155,15 @@ class MapProvider with ChangeNotifier {
         print(places[2].toString());
       }
     });
+  }
+
+  Future<void> updateRoutes(LatLng firstPoint, LatLng lastPoint) async {
+    PolylineResult result = await setPolyline(
+      firstPoint: firstPoint,
+      lastPoint: lastPoint,
+    );
+    calculateDistanceBetweenRoutes(result.points);
+    notifyListeners();
   }
 
   void addMarker(LatLng pos, BitmapDescriptor pin) {
