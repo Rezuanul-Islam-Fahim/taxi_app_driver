@@ -308,6 +308,19 @@ class MapProvider with ChangeNotifier {
     );
     calculateDistanceBetweenRoutes(polylines.points);
     listenToPositionStream();
+    _controller!.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: LatLng(
+            _deviceLocation!.latitude,
+            _deviceLocation!.longitude,
+          ),
+          bearing: _deviceLocation!.heading,
+          tilt: 30,
+          zoom: 16,
+        ),
+      ),
+    );
 
     notifyListeners();
   }
