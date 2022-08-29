@@ -374,6 +374,7 @@ class MapProvider with ChangeNotifier {
   Future<void> startTrip(Trip trip) async {
     updateOngoingTrip(trip);
     changeMapAction(MapAction.tripStarted);
+
     _controller!.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
@@ -381,10 +382,13 @@ class MapProvider with ChangeNotifier {
             _deviceLocation!.latitude,
             _deviceLocation!.longitude,
           ),
+          bearing: _deviceLocation!.heading,
+          tilt: 30,
           zoom: 16,
         ),
       ),
     );
+
     _positionStream!.resume();
 
     notifyListeners();
