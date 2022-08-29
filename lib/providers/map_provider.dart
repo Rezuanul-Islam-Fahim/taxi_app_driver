@@ -238,6 +238,24 @@ class MapProvider with ChangeNotifier {
     _mapAction = MapAction.browse;
   }
 
+  LatLng getNorthEastLatLng(LatLng firstPoint, LatLng lastPoint) => LatLng(
+        firstPoint.latitude >= lastPoint.latitude
+            ? firstPoint.latitude
+            : lastPoint.latitude,
+        firstPoint.longitude >= lastPoint.longitude
+            ? firstPoint.longitude
+            : lastPoint.longitude,
+      );
+
+  LatLng getSouthWestLatLng(LatLng firstPoint, LatLng lastPoint) => LatLng(
+        firstPoint.latitude <= lastPoint.latitude
+            ? firstPoint.latitude
+            : lastPoint.latitude,
+        firstPoint.longitude <= lastPoint.longitude
+            ? firstPoint.longitude
+            : lastPoint.longitude,
+      );
+
   Future<void> showTrip(LatLng pickup, LatLng destination) async {
     _markers!.clear();
 
@@ -247,8 +265,12 @@ class MapProvider with ChangeNotifier {
 
     notifyListeners();
     _controller!.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(target: pickup, zoom: 14),
+      CameraUpdate.newLatLngBounds(
+        LatLngBounds(
+          northeast: getNorthEastLatLng(pickup, destination),
+          southwest: getSouthWestLatLng(pickup, destination),
+        ),
+        160,
       ),
     );
   }
