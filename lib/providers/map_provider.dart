@@ -346,6 +346,28 @@ class MapProvider with ChangeNotifier {
     calculateDistanceBetweenRoutes(result.points);
     _positionStream!.pause();
 
+    _controller!.animateCamera(
+      CameraUpdate.newLatLngBounds(
+        LatLngBounds(
+          northeast: getNorthEastLatLng(
+            LatLng(trip.destinationLatitude!, trip.destinationLongitude!),
+            LatLng(
+              _deviceLocation!.latitude,
+              _deviceLocation!.longitude,
+            ),
+          ),
+          southwest: getSouthWestLatLng(
+            LatLng(trip.destinationLatitude!, trip.destinationLongitude!),
+            LatLng(
+              _deviceLocation!.latitude,
+              _deviceLocation!.longitude,
+            ),
+          ),
+        ),
+        160,
+      ),
+    );
+
     notifyListeners();
   }
 
