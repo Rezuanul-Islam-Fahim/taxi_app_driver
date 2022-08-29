@@ -1,5 +1,7 @@
 class Trip {
   String? id;
+  String? passengerId;
+  String? driverId;
   String? pickupAddress;
   String? destinationAddress;
   double? pickupLatitude;
@@ -17,6 +19,8 @@ class Trip {
 
   Trip({
     this.id,
+    this.passengerId,
+    this.driverId,
     this.pickupAddress,
     this.destinationAddress,
     this.pickupLatitude,
@@ -35,6 +39,8 @@ class Trip {
 
   factory Trip.fromJson(Map<String, dynamic> data) => Trip(
         id: data['id'],
+        passengerId: data['passengerId'],
+        driverId: data['driverId'],
         pickupAddress: data['pickupAddress'],
         destinationAddress: data['destinationAddress'],
         pickupLatitude: data['pickupLatitude'],
@@ -61,6 +67,8 @@ class Trip {
     }
 
     addNonNull('id', id);
+    addNonNull('passengerId', passengerId);
+    addNonNull('driverId', driverId);
     addNonNull('pickupAddress', pickupAddress);
     addNonNull('destinationAddress', destinationAddress);
     addNonNull('pickupLatitude', pickupLatitude);

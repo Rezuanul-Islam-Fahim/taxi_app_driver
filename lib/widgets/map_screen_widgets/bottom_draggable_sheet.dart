@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +31,7 @@ class _BottomDraggableSheetState extends State<BottomDraggableSheet> {
 
   void _acceptTrip(Trip trip) async {
     trip.accepted = true;
+    trip.driverId = FirebaseAuth.instance.currentUser!.uid;
     await _dbService.updateTrip(trip);
     _mapProvider.acceptTrip(trip);
   }
