@@ -11,6 +11,7 @@ import 'package:uuid/uuid.dart';
 import '../constant.dart';
 import '../models/map_action.dart';
 import '../models/trip_model.dart';
+import '../services/database_service.dart';
 import '../services/location_service.dart';
 
 class MapProvider with ChangeNotifier {
@@ -133,6 +134,7 @@ class MapProvider with ChangeNotifier {
           print(pos.toString());
         }
 
+        updateUserLocation(pos);
         setDeviceLocation(pos);
         setDeviceLocationAddress(
           pos.latitude,
@@ -168,6 +170,13 @@ class MapProvider with ChangeNotifier {
       if (kDebugMode) {
         print(places[2].toString());
       }
+    });
+  }
+
+  void updateUserLocation(Position pos) {
+    DatabaseService().updateUser({
+      'userLatitude': pos.latitude,
+      'userLongitude': pos.longitude,
     });
   }
 

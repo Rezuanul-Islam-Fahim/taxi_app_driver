@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../models/trip_model.dart';
 import '../models/user_model.dart' as user;
@@ -8,6 +9,13 @@ class DatabaseService {
 
   Future<void> storeUser(user.User user) async {
     await _firestore.collection('drivers').doc(user.id).set(user.toMap());
+  }
+
+  void updateUser(Map<String, dynamic> data) {
+    _firestore
+        .collection('drivers')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update(data);
   }
 
   Stream<List<Trip>> getTrips() {
