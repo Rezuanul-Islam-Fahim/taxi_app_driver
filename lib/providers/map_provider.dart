@@ -408,6 +408,7 @@ class MapProvider with ChangeNotifier {
     changeMapAction(MapAction.reachedDestination);
     clearPaths();
     _positionStream!.cancel();
+    _positionStream = null;
     _distanceBetweenRoutes = null;
 
     notifyListeners();
