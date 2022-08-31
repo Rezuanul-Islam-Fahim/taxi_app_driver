@@ -51,30 +51,32 @@ class TripStarted extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (ongoingTrip.destinationAddress != null)
-                        Column(
-                          children: [
-                            _buildInfoText(
-                              'Heading Towards: ',
-                              ongoingTrip.destinationAddress!,
-                            ),
-                            const SizedBox(height: 2),
-                          ],
-                        ),
-                      if (mapProvider.distanceBetweenRoutes != null)
-                        _buildInfoText(
-                          'Remaining Distance: ',
-                          '${mapProvider.distanceBetweenRoutes!.toStringAsFixed(2)} Km',
-                        )
-                      else
-                        _buildInfoText(
-                          'Remaining Distance: ',
-                          '--',
-                        ),
-                    ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (ongoingTrip.destinationAddress != null)
+                          Column(
+                            children: [
+                              _buildInfoText(
+                                'Heading Towards: ',
+                                ongoingTrip.destinationAddress!,
+                              ),
+                              const SizedBox(height: 2),
+                            ],
+                          ),
+                        if (mapProvider.distanceBetweenRoutes != null)
+                          _buildInfoText(
+                            'Remaining Distance: ',
+                            '${mapProvider.distanceBetweenRoutes!.toStringAsFixed(2)} Km',
+                          )
+                        else
+                          _buildInfoText(
+                            'Remaining Distance: ',
+                            '--',
+                          ),
+                      ],
+                    ),
                   ),
                   if (ongoingTrip.cost != null)
                     Chip(

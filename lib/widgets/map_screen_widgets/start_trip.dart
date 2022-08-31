@@ -51,40 +51,42 @@ class StartTrip extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (ongoingTrip.pickupAddress != null)
-                        Column(
-                          children: [
-                            _buildInfoText(
-                              'From: ',
-                              ongoingTrip.pickupAddress!,
-                            ),
-                            const SizedBox(height: 2),
-                          ],
-                        ),
-                      if (ongoingTrip.destinationAddress != null)
-                        Column(
-                          children: [
-                            _buildInfoText(
-                              'To: ',
-                              ongoingTrip.destinationAddress!,
-                            ),
-                            const SizedBox(height: 2),
-                          ],
-                        ),
-                      if (mapProvider.distanceBetweenRoutes != null)
-                        _buildInfoText(
-                          'Distance: ',
-                          '${mapProvider.distanceBetweenRoutes!.toStringAsFixed(2)} Km',
-                        )
-                      else
-                        _buildInfoText(
-                          'Distance: ',
-                          '--',
-                        )
-                    ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (ongoingTrip.pickupAddress != null)
+                          Column(
+                            children: [
+                              _buildInfoText(
+                                'From: ',
+                                ongoingTrip.pickupAddress!,
+                              ),
+                              const SizedBox(height: 2),
+                            ],
+                          ),
+                        if (ongoingTrip.destinationAddress != null)
+                          Column(
+                            children: [
+                              _buildInfoText(
+                                'To: ',
+                                ongoingTrip.destinationAddress!,
+                              ),
+                              const SizedBox(height: 2),
+                            ],
+                          ),
+                        if (mapProvider.distanceBetweenRoutes != null)
+                          _buildInfoText(
+                            'Distance: ',
+                            '${mapProvider.distanceBetweenRoutes!.toStringAsFixed(2)} Km',
+                          )
+                        else
+                          _buildInfoText(
+                            'Distance: ',
+                            '--',
+                          )
+                      ],
+                    ),
                   ),
                   if (ongoingTrip.cost != null)
                     Chip(

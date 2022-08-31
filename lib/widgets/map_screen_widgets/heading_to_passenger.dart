@@ -51,24 +51,26 @@ class HeadingToPassenger extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (ongoingTrip.pickupAddress != null)
-                        Text(
-                          ongoingTrip.pickupAddress!,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (ongoingTrip.pickupAddress != null)
+                          Text(
+                            ongoingTrip.pickupAddress!,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                      if (mapProvider.distanceBetweenRoutes == null)
-                        const Text('Distance: --')
-                      else
-                        Text(
-                          'Distance ${mapProvider.distanceBetweenRoutes!.toStringAsFixed(2)} Km',
-                        ),
-                    ],
+                        if (mapProvider.distanceBetweenRoutes == null)
+                          const Text('Distance: --')
+                        else
+                          Text(
+                            'Distance ${mapProvider.distanceBetweenRoutes!.toStringAsFixed(2)} Km',
+                          ),
+                      ],
+                    ),
                   ),
                   if (ongoingTrip.cost != null)
                     Chip(
