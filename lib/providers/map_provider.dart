@@ -175,6 +175,7 @@ class MapProvider with ChangeNotifier {
 
   void updateUserLocation(Position pos) {
     DatabaseService().updateUser({
+      'heading': pos.heading,
       'userLatitude': pos.latitude,
       'userLongitude': pos.longitude,
     });
