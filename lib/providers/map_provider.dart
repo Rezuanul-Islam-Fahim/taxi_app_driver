@@ -182,11 +182,12 @@ class MapProvider with ChangeNotifier {
   }
 
   Future<void> updateRoutes(LatLng firstPoint, LatLng lastPoint) async {
+    PolylineResult result = await setPolyline(
+      firstPoint: firstPoint,
+      lastPoint: lastPoint,
+    );
+
     if (_markers!.isNotEmpty) {
-      PolylineResult result = await setPolyline(
-        firstPoint: firstPoint,
-        lastPoint: lastPoint,
-      );
       calculateDistanceBetweenRoutes(result.points);
       notifyListeners();
     }
