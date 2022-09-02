@@ -327,7 +327,7 @@ class MapProvider with ChangeNotifier {
           ),
           bearing: _deviceLocation!.heading,
           tilt: 30,
-          zoom: 16,
+          zoom: 17,
         ),
       ),
     );
@@ -394,7 +394,7 @@ class MapProvider with ChangeNotifier {
           ),
           bearing: _deviceLocation!.heading,
           tilt: 30,
-          zoom: 16,
+          zoom: 17,
         ),
       ),
     );
@@ -413,6 +413,11 @@ class MapProvider with ChangeNotifier {
     _distanceBetweenRoutes = null;
 
     notifyListeners();
+
+    animateCameraToPos(
+      LatLng(_deviceLocation!.latitude, _deviceLocation!.longitude),
+      16,
+    );
   }
 
   void completeTrip() {
@@ -420,5 +425,9 @@ class MapProvider with ChangeNotifier {
     _ongoingTrip = null;
 
     notifyListeners();
+  }
+
+  void animateCameraToPos(LatLng pos, [double zoom = 15]) {
+    _controller!.animateCamera(CameraUpdate.newLatLngZoom(pos, zoom));
   }
 }
