@@ -36,7 +36,7 @@ class MapScreen extends StatelessWidget {
                         onCameraMove: mapProvider.onCameraMove,
                         markers: mapProvider.markers!,
                         polylines: mapProvider.polylines!,
-                        padding: const EdgeInsets.only(bottom: 90),
+                        padding: const EdgeInsets.only(bottom: 120),
                       )
                     : const Center(
                         child: CircularProgressIndicator(),
