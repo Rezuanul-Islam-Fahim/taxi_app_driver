@@ -126,16 +126,18 @@ class _BottomDraggableSheetState extends State<BottomDraggableSheet> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildInfoText('To: ', trip.destinationAddress!),
-                  const SizedBox(height: 2),
-                  _buildInfoText(
-                    'Distance: ',
-                    '${trip.distance!.toStringAsFixed(2)} Km',
-                  ),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildInfoText('To: ', trip.destinationAddress!),
+                    const SizedBox(height: 2),
+                    _buildInfoText(
+                      'Distance: ',
+                      '${trip.distance!.toStringAsFixed(2)} Km',
+                    ),
+                  ],
+                ),
               ),
               Chip(
                 label: Text(
