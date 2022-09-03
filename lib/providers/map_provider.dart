@@ -15,6 +15,7 @@ import '../services/database_service.dart';
 import '../services/location_service.dart';
 
 class MapProvider with ChangeNotifier {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final LocationService _locationService = LocationService();
   late CameraPosition? _cameraPos;
   late GoogleMapController? _controller;
@@ -29,6 +30,7 @@ class MapProvider with ChangeNotifier {
   late double? _distanceBetweenRoutes;
   late StreamSubscription<Position>? _positionStream;
 
+  GlobalKey<ScaffoldState> get scaffoldKey => _scaffoldKey;
   CameraPosition? get cameraPos => _cameraPos;
   GoogleMapController? get controller => _controller;
   Position? get deviceLocation => _deviceLocation;
@@ -74,33 +76,52 @@ class MapProvider with ChangeNotifier {
     Position? deviceLocation;
     LatLng? cameraLatLng;
 
-    if (await _locationService.checkLocationPermission()) {
-      try {
-        deviceLocation = await _locationService.getLocation();
-      } catch (error) {
-        if (kDebugMode) {
-          print('=====///=============///=====');
-          print('Unable to get device location');
-          print('///==========///==========///');
+    if (await _locationService.checkLocationIfPermanentlyDisabled()) {
+      showDialog(
+        context: _scaffoldKey.currentContext!,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: const Text(
+              'Location permission is permanently disabled. Enable it from app settings',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Geolocator.openAppSettings(),
+                child: const Text('Open App Settings'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      if (await _locationService.checkLocationPermission()) {
+        try {
+          deviceLocation = await _locationService.getLocation();
+          cameraLatLng = LatLng(
+            deviceLocation.latitude,
+            deviceLocation.longitude,
+          );
+          setDeviceLocation(deviceLocation);
+          setDeviceLocationAddress(
+            deviceLocation.latitude,
+            deviceLocation.longitude,
+          );
+          listenToPositionStream();
+        } catch (error) {
+          if (kDebugMode) {
+            print('=====///=============///=====');
+            print('Unable to get device location');
+            print('///==========///==========///');
+          }
         }
       }
     }
 
-    if (deviceLocation != null) {
-      cameraLatLng = LatLng(
-        deviceLocation.latitude,
-        deviceLocation.longitude,
-      );
-      setDeviceLocation(deviceLocation);
-      setDeviceLocationAddress(
-        deviceLocation.latitude,
-        deviceLocation.longitude,
-      );
-    } else {
+    if (deviceLocation == null) {
       cameraLatLng = const LatLng(37.42227936982647, -122.08611108362673);
     }
 
-    setCameraPosition(cameraLatLng);
+    setCameraPosition(cameraLatLng!);
 
     notifyListeners();
   }
