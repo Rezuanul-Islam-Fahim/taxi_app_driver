@@ -24,7 +24,7 @@ class TaxiAppDriver extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: MapProvider()),
-        ChangeNotifierProvider.value(value: UserProvider()),
+        ChangeNotifierProvider.value(value: UserProvider.initialize()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

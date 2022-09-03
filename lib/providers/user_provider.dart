@@ -1,14 +1,27 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
-import '../models/user_model.dart';
+import '../models/user_model.dart' as user;
+import '../services/database_service.dart';
 
 class UserProvider with ChangeNotifier {
-  User? _loggedUser;
+  final DatabaseService _dbService = DatabaseService();
+  user.User? _loggedUser;
 
-  User? get loggedUser => _loggedUser;
+  user.User? get loggedUser => _loggedUser;
 
-  void setUser(User user) {
-    print(user.toMap());
+  void setUser(user.User user) {
     _loggedUser = user;
+  }
+
+  UserProvider.initialize() {
+    if (FirebaseAuth.instance.currentUser != null) {
+      _dbService.getUser(FirebaseAuth.instance.currentUser!.uid).then(
+        (user.User user) {
+          _loggedUser = user;
+          notifyListeners();
+        },
+      );
+    }
   }
 }
