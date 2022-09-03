@@ -11,6 +11,12 @@ class DatabaseService {
     await _firestore.collection('drivers').doc(user.id).set(user.toMap());
   }
 
+  Future<user.User> getUser(String id) async {
+    return user.User.fromJson(
+      (await _firestore.collection('drivers').doc(id).get()).data()!,
+    );
+  }
+
   void updateUser(Map<String, dynamic> data) {
     _firestore
         .collection('drivers')

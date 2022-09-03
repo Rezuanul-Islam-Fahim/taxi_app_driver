@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/completed_trip_screen.dart';
@@ -44,7 +45,9 @@ class CustomSideDrawer extends StatelessWidget {
             context: context,
             title: 'Logout',
             icon: Icons.exit_to_app,
-            onTap: () {},
+            onTap: () {
+              FirebaseAuth.instance.signOut();
+            },
           ),
         ],
       ),

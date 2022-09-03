@@ -26,9 +26,10 @@ class AuthServices {
         password: password!,
       );
 
-      // if (userCred.user != null ) {
-
-      // }
+      if (userCred.user != null) {
+        user.User loggedUser = await _db.getUser(userCred.user!.uid);
+        userProvider!.setUser(loggedUser);
+      }
 
       return true;
     } catch (e) {

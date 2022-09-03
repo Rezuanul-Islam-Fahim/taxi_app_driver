@@ -8,6 +8,7 @@ class UserProvider with ChangeNotifier {
   User? get loggedUser => _loggedUser;
 
   void setUser(User user) {
+    print(user.toMap());
     _loggedUser = user;
   }
 }
