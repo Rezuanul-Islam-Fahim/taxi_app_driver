@@ -7,6 +7,7 @@ import '../models/map_action.dart';
 import '../providers/map_provider.dart';
 import '../widgets/map_screen_widgets/bottom_draggable_sheet.dart';
 import '../widgets/map_screen_widgets/collect_cash.dart';
+import '../widgets/map_screen_widgets/floating_drawer_bar_button.dart';
 import '../widgets/map_screen_widgets/heading_to_passenger.dart';
 import '../widgets/map_screen_widgets/start_trip.dart';
 import '../widgets/map_screen_widgets/trip_started.dart';
@@ -24,6 +25,11 @@ class MapScreen extends StatelessWidget {
       builder: (BuildContext context, MapProvider mapProvider, _) {
         return Scaffold(
           key: mapProvider.scaffoldKey,
+          drawer: Drawer(
+            child: Container(
+              color: Colors.red,
+            ),
+          ),
           body: SafeArea(
             child: Stack(
               children: [
@@ -49,6 +55,7 @@ class MapScreen extends StatelessWidget {
                 StartTrip(key: key),
                 TripStarted(key: key),
                 CollectCash(key: key),
+                const FloatingDrawerBarButton(),
               ],
             ),
           ),
