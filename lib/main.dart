@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'providers/map_provider.dart';
 import 'providers/user_provider.dart';
+import 'screens/cash_earned_screen.dart';
 import 'screens/completed_trip_screen.dart';
 import 'screens/login_signup_screen.dart';
 import 'screens/map_screen.dart';
@@ -36,6 +37,7 @@ class TaxiAppDriver extends StatelessWidget {
           LoginSignupScreen.route: (_) => const LoginSignupScreen(),
           MapScreen.route: (_) => const MapScreen(),
           CompletedTripsScreen.route: (_) => const CompletedTripsScreen(),
+          CashEarnedScreen.route: (_) => CashEarnedScreen(),
         },
       ),
     );

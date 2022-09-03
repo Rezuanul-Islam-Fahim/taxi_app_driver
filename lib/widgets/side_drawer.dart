@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/user_provider.dart';
+import '../screens/cash_earned_screen.dart';
 import '../screens/completed_trip_screen.dart';
 import '../models/user_model.dart' as user;
 import '../screens/login_signup_screen.dart';
@@ -59,7 +60,9 @@ class CustomSideDrawer extends StatelessWidget {
             context: context,
             title: 'Cash Earned',
             icon: Icons.attach_money_rounded,
-            onTap: () {},
+            onTap: () => Navigator.of(context).pushNamed(
+              CashEarnedScreen.route,
+            ),
           ),
           _buildButtonTile(
             context: context,
