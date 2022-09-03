@@ -37,7 +37,7 @@ class TaxiAppDriver extends StatelessWidget {
           LoginSignupScreen.route: (_) => const LoginSignupScreen(),
           MapScreen.route: (_) => const MapScreen(),
           CompletedTripsScreen.route: (_) => const CompletedTripsScreen(),
-          CashEarnedScreen.route: (_) => CashEarnedScreen(),
+          CashEarnedScreen.route: (_) => const CashEarnedScreen(),
         },
       ),
     );

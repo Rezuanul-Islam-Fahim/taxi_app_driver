@@ -40,6 +40,23 @@ class DatabaseService {
         );
   }
 
+  Future<List<Trip>> getDriverCompletedTrips() async {
+    return (await _firestore
+            .collection('trips')
+            .where(
+              'driverId',
+              isEqualTo: FirebaseAuth.instance.currentUser!.uid,
+            )
+            .where('tripCompleted', isEqualTo: true)
+            .get())
+        .docs
+        .map(
+          (QueryDocumentSnapshot snapshot) =>
+              Trip.fromJson(snapshot.data() as Map<String, dynamic>),
+        )
+        .toList();
+  }
+
   Future<void> updateTrip(Trip trip) async {
     await _firestore.collection('trips').doc(trip.id).update(trip.toMap());
   }
