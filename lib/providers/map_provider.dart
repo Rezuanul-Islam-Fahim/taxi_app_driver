@@ -106,7 +106,6 @@ class MapProvider with ChangeNotifier {
             deviceLocation.latitude,
             deviceLocation.longitude,
           );
-          listenToPositionStream();
         } catch (error) {
           if (kDebugMode) {
             print('=====///=============///=====');
