@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 
 import 'providers/map_provider.dart';
+import 'screens/completed_trip_screen.dart';
 import 'screens/login_signup_screen.dart';
 import 'screens/map_screen.dart';
 import 'screens/onboarding_screen.dart';
@@ -30,6 +31,7 @@ class TaxiAppDriver extends StatelessWidget {
           OnboardingScreen.route: (_) => const OnboardingScreen(),
           LoginSignupScreen.route: (_) => const LoginSignupScreen(),
           MapScreen.route: (_) => const MapScreen(),
+          CompletedTripsScreen.route: (_) => const CompletedTripsScreen(),
         },
       ),
     );

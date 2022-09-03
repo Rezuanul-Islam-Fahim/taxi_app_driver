@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../screens/completed_trip_screen.dart';
+
 class CustomSideDrawer extends StatelessWidget {
   const CustomSideDrawer({Key? key}) : super(key: key);
 
@@ -25,16 +27,21 @@ class CustomSideDrawer extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           _buildButtonTile(
+            context: context,
             title: 'Completed Trips',
             icon: Icons.navigation_rounded,
-            onTap: () {},
+            onTap: () => Navigator.of(context).pushNamed(
+              CompletedTripsScreen.route,
+            ),
           ),
           _buildButtonTile(
+            context: context,
             title: 'Cash Earned',
             icon: Icons.attach_money_rounded,
             onTap: () {},
           ),
           _buildButtonTile(
+            context: context,
             title: 'Logout',
             icon: Icons.exit_to_app,
             onTap: () {},
@@ -45,6 +52,7 @@ class CustomSideDrawer extends StatelessWidget {
   }
 
   Widget _buildButtonTile({
+    BuildContext? context,
     String? title,
     IconData? icon,
     Function()? onTap,
@@ -52,7 +60,10 @@ class CustomSideDrawer extends StatelessWidget {
     return ListTile(
       title: Text(title!),
       leading: Icon(icon),
-      onTap: onTap,
+      onTap: () {
+        Navigator.pop(context!);
+        onTap!();
+      },
     );
   }
 }
