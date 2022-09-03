@@ -11,6 +11,7 @@ import '../widgets/map_screen_widgets/floating_drawer_bar_button.dart';
 import '../widgets/map_screen_widgets/heading_to_passenger.dart';
 import '../widgets/map_screen_widgets/start_trip.dart';
 import '../widgets/map_screen_widgets/trip_started.dart';
+import '../widgets/side_drawer.dart';
 
 class MapScreen extends StatelessWidget {
   const MapScreen({Key? key}) : super(key: key);
@@ -25,11 +26,7 @@ class MapScreen extends StatelessWidget {
       builder: (BuildContext context, MapProvider mapProvider, _) {
         return Scaffold(
           key: mapProvider.scaffoldKey,
-          drawer: Drawer(
-            child: Container(
-              color: Colors.red,
-            ),
-          ),
+          drawer: const CustomSideDrawer(),
           body: SafeArea(
             child: Stack(
               children: [
