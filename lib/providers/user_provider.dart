@@ -10,10 +10,6 @@ class UserProvider with ChangeNotifier {
 
   user.User? get loggedUser => _loggedUser;
 
-  void setUser(user.User user) {
-    _loggedUser = user;
-  }
-
   UserProvider.initialize() {
     if (FirebaseAuth.instance.currentUser != null) {
       _dbService.getUser(FirebaseAuth.instance.currentUser!.uid).then(
@@ -23,5 +19,13 @@ class UserProvider with ChangeNotifier {
         },
       );
     }
+  }
+
+  void setUser(user.User user) {
+    _loggedUser = user;
+  }
+
+  void clearUser() {
+    _loggedUser = null;
   }
 }

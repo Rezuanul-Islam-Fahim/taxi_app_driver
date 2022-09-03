@@ -5,16 +5,18 @@ import 'package:provider/provider.dart';
 import '../providers/user_provider.dart';
 import '../screens/completed_trip_screen.dart';
 import '../models/user_model.dart' as user;
+import '../screens/login_signup_screen.dart';
 
 class CustomSideDrawer extends StatelessWidget {
   const CustomSideDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final user.User? loggedUser = Provider.of<UserProvider>(
+    final UserProvider userProvider = Provider.of<UserProvider>(
       context,
       listen: false,
-    ).loggedUser;
+    );
+    final user.User? loggedUser = userProvider.loggedUser;
 
     return Drawer(
       child: Column(
@@ -64,6 +66,10 @@ class CustomSideDrawer extends StatelessWidget {
             title: 'Logout',
             icon: Icons.exit_to_app,
             onTap: () {
+              userProvider.clearUser();
+              Navigator.of(context).pushReplacementNamed(
+                LoginSignupScreen.route,
+              );
               FirebaseAuth.instance.signOut();
             },
           ),
