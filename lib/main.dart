@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 
 import 'providers/map_provider.dart';
+import 'providers/user_provider.dart';
 import 'screens/completed_trip_screen.dart';
 import 'screens/login_signup_screen.dart';
 import 'screens/map_screen.dart';
@@ -20,8 +21,11 @@ class TaxiAppDriver extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: MapProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: MapProvider()),
+        ChangeNotifierProvider.value(value: UserProvider()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Taxi App Driver',

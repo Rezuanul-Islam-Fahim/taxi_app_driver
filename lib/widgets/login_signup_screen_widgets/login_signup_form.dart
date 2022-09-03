@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../providers/user_provider.dart';
 import '../../screens/map_screen.dart';
 import '../../services/auth_services.dart';
 import 'text_field.dart';
@@ -35,6 +37,10 @@ class _LoginFormState extends State<LoginForm>
   }
 
   Future<void> _authenticate(BuildContext context) async {
+    final UserProvider userProvider = Provider.of<UserProvider>(
+      context,
+      listen: false,
+    );
     bool isAuthenticated;
 
     _formKey.currentState!.save();
@@ -43,12 +49,14 @@ class _LoginFormState extends State<LoginForm>
       isAuthenticated = await _auth.login(
         email: _email,
         password: _password,
+        userProvider: userProvider,
       );
     } else {
       isAuthenticated = await _auth.createAccount(
         userName: _userName,
         email: _email,
         password: _password,
+        userProvider: userProvider,
       );
     }
 
