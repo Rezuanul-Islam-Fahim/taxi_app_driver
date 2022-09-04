@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/trip_model.dart';
 import '../services/database_service.dart';
+import '../widgets/side_drawer.dart';
 
 class CashEarnedScreen extends StatelessWidget {
   const CashEarnedScreen({Key? key}) : super(key: key);
@@ -15,6 +16,7 @@ class CashEarnedScreen extends StatelessWidget {
         title: const Text('Cash Earned'),
         backgroundColor: Colors.black,
       ),
+      drawer: const CustomSideDrawer(),
       body: FutureBuilder(
         future: DatabaseService().getDriverCompletedTrips(),
         builder: (BuildContext context, AsyncSnapshot<List<Trip>> snapshot) {
