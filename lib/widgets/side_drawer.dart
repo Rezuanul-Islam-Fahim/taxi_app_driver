@@ -7,6 +7,7 @@ import '../screens/cash_earned_screen.dart';
 import '../screens/completed_trip_screen.dart';
 import '../models/user_model.dart' as user;
 import '../screens/login_signup_screen.dart';
+import '../screens/map_screen.dart';
 
 class CustomSideDrawer extends StatelessWidget {
   const CustomSideDrawer({Key? key}) : super(key: key);
@@ -48,6 +49,14 @@ class CustomSideDrawer extends StatelessWidget {
                   ),
                 ),
           const SizedBox(height: 10),
+          _buildButtonTile(
+            context: context,
+            title: 'Home',
+            icon: Icons.home,
+            onTap: () => Navigator.of(context).pushNamed(
+              MapScreen.route,
+            ),
+          ),
           _buildButtonTile(
             context: context,
             title: 'Completed Trips',
