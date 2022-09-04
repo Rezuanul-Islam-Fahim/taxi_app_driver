@@ -79,8 +79,9 @@ class CustomSideDrawer extends StatelessWidget {
             icon: Icons.exit_to_app,
             onTap: () {
               userProvider.clearUser();
-              Navigator.of(context).pushReplacementNamed(
+              Navigator.of(context).pushNamedAndRemoveUntil(
                 LoginSignupScreen.route,
+                (Route<dynamic> route) => false,
               );
               FirebaseAuth.instance.signOut();
             },
