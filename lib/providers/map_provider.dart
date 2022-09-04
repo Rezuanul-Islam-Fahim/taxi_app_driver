@@ -384,7 +384,8 @@ class MapProvider with ChangeNotifier {
       ),
     );
     calculateDistanceBetweenRoutes(result.points);
-    _positionStream!.pause();
+    _positionStream!.cancel();
+    _positionStream = null;
 
     _controller!.animateCamera(
       CameraUpdate.newLatLngBounds(
@@ -429,8 +430,6 @@ class MapProvider with ChangeNotifier {
       ),
     );
 
-    _positionStream!.resume();
-
     notifyListeners();
   }
 
@@ -438,8 +437,6 @@ class MapProvider with ChangeNotifier {
     updateOngoingTrip(trip);
     changeMapAction(MapAction.reachedDestination);
     clearPaths();
-    _positionStream!.cancel();
-    _positionStream = null;
     _distanceBetweenRoutes = null;
 
     notifyListeners();
