@@ -18,7 +18,7 @@ class FloatingDrawerBarButton extends StatelessWidget {
       left: 25,
       child: GestureDetector(
         onTap: () {
-          mapProvider.scaffoldKey.currentState!.openDrawer();
+          mapProvider.scaffoldKey!.currentState!.openDrawer();
         },
         child: Container(
           padding: const EdgeInsets.all(8),

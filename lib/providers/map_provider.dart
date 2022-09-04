@@ -15,8 +15,8 @@ import '../services/database_service.dart';
 import '../services/location_service.dart';
 
 class MapProvider with ChangeNotifier {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final LocationService _locationService = LocationService();
+  late GlobalKey<ScaffoldState>? _scaffoldKey;
   late CameraPosition? _cameraPos;
   late GoogleMapController? _controller;
   late Position? _deviceLocation;
@@ -30,7 +30,7 @@ class MapProvider with ChangeNotifier {
   late double? _distanceBetweenRoutes;
   late StreamSubscription<Position>? _positionStream;
 
-  GlobalKey<ScaffoldState> get scaffoldKey => _scaffoldKey;
+  GlobalKey<ScaffoldState>? get scaffoldKey => _scaffoldKey;
   CameraPosition? get cameraPos => _cameraPos;
   GoogleMapController? get controller => _controller;
   Position? get deviceLocation => _deviceLocation;
@@ -43,6 +43,7 @@ class MapProvider with ChangeNotifier {
   StreamSubscription<Position>? get positionStream => _positionStream;
 
   MapProvider() {
+    _scaffoldKey = null;
     _mapAction = MapAction.browse;
     _cameraPos = null;
     _deviceLocation = null;
@@ -61,6 +62,10 @@ class MapProvider with ChangeNotifier {
     }
   }
 
+  void setScaffoldKey(GlobalKey<ScaffoldState> scaffoldKey) {
+    _scaffoldKey = scaffoldKey;
+  }
+
   Future<void> setCustomPin() async {
     _selectionPin = await BitmapDescriptor.fromAssetImage(
       const ImageConfiguration(devicePixelRatio: 0.5, size: Size(10, 10)),
@@ -72,13 +77,15 @@ class MapProvider with ChangeNotifier {
     );
   }
 
-  Future<void> initializeMap() async {
+  Future<void> initializeMap({GlobalKey<ScaffoldState>? scaffoldKey}) async {
     Position? deviceLocation;
     LatLng? cameraLatLng;
 
+    setScaffoldKey(scaffoldKey!);
+
     if (await _locationService.checkLocationIfPermanentlyDisabled()) {
       showDialog(
-        context: _scaffoldKey.currentContext!,
+        context: _scaffoldKey!.currentContext!,
         builder: (BuildContext context) {
           return AlertDialog(
             content: const Text(
