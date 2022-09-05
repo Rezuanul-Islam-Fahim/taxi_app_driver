@@ -1,25 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../../providers/map_provider.dart';
 
 class FloatingDrawerBarButton extends StatelessWidget {
-  const FloatingDrawerBarButton({Key? key}) : super(key: key);
+  const FloatingDrawerBarButton({
+    Key? key,
+    this.scaffoldKey,
+  }) : super(key: key);
+
+  final GlobalKey<ScaffoldState>? scaffoldKey;
 
   @override
   Widget build(BuildContext context) {
-    final MapProvider mapProvider = Provider.of<MapProvider>(
-      context,
-      listen: false,
-    );
-
     return Positioned(
       top: 25,
       left: 25,
       child: GestureDetector(
-        onTap: () {
-          mapProvider.scaffoldKey!.currentState!.openDrawer();
-        },
+        onTap: () => scaffoldKey!.currentState!.openDrawer(),
         child: Container(
           padding: const EdgeInsets.all(8),
           decoration: const BoxDecoration(

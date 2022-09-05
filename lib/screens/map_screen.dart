@@ -55,7 +55,7 @@ class MapScreen extends StatelessWidget {
                 StartTrip(key: key),
                 TripStarted(key: key),
                 CollectCash(key: key),
-                const FloatingDrawerBarButton(),
+                FloatingDrawerBarButton(scaffoldKey: scaffoldKey),
               ],
             ),
           ),
