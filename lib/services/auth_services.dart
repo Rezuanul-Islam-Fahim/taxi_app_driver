@@ -21,14 +21,22 @@ class AuthServices {
     }
 
     try {
-      UserCredential userCred = await _auth.signInWithEmailAndPassword(
-        email: email!,
-        password: password!,
-      );
+      if (!await _db.checkIfPassenger(email!)) {
+        UserCredential userCred = await _auth.signInWithEmailAndPassword(
+          email: email,
+          password: password!,
+        );
 
-      if (userCred.user != null) {
-        user.User loggedUser = await _db.getUser(userCred.user!.uid);
-        userProvider!.setUser(loggedUser);
+        if (userCred.user != null) {
+          user.User loggedUser = await _db.getUser(userCred.user!.uid);
+          userProvider!.setUser(loggedUser);
+        }
+      } else {
+        if (kDebugMode) {
+          print('This is passenger account. Don\'t have permission to login');
+        }
+
+        return false;
       }
 
       return true;
