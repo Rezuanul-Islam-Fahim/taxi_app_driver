@@ -69,7 +69,7 @@ class CollectCash extends StatelessWidget {
               const SizedBox(height: 5),
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.black,
+                  backgroundColor: Colors.black,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 20,
                     vertical: 10,
