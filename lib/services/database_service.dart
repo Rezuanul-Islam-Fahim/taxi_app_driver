@@ -10,6 +10,9 @@ class DatabaseService {
 
   Future<void> storeUser(user.User user) async {
     await _firestore.collection('drivers').doc(user.id).set(user.toMap());
+    _firestore.collection('registeredUsers').doc('drivers').set({
+      'registeredEmails': FieldValue.arrayUnion([user.email]),
+    });
   }
 
   Future<bool> checkIfPassenger(String email) async {
