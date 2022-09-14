@@ -1,6 +1,6 @@
 # Taxi App Driver
 
-A Taxi Driver app created using Dart & Google's Flutter framework.
+This is a Taxi Driver app created using Dart & Google's Flutter framework.
 
 <img width="80%" src="screenshots/banner.png">
 
